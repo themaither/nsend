@@ -7,7 +7,7 @@ pub struct SendArgs {
 #[derive(clap::Parser)]
 pub struct ReceiveArgs {
     pub address: String,
-    pub path: String,
+    pub path: Option<String>,
 }
 
 #[derive(clap::Parser)]

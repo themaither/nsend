@@ -29,11 +29,14 @@ fn send(path: Option<String>, address: String) -> anyhow::Result<()>{
     Ok(())
 }
 
-fn receive(path: String, address: String) -> anyhow::Result<()> { 
+fn receive(path: Option<String>, address: String) -> anyhow::Result<()> { 
     let listener = TcpListener::bind(address)?;
     let contents = io::read_from_listener(listener)?; 
     
-    io::write_file(path, contents)?;
+    match path {
+        Some(a) => io::write_file(a, contents)?,
+        None => io::write_stdout(contents)?,
+    }
     
     Ok(())
 }

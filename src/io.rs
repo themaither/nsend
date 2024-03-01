@@ -18,6 +18,12 @@ pub fn read_file(path: String) -> anyhow::Result<Vec<u8>> {
     Ok(file_contents)
 }
 
+pub fn write_stdout(contents: Vec<u8>) -> anyhow::Result<()> {
+    std::io::stdout().write(&contents)?;
+    
+    Ok(())
+}
+
 pub fn read_stdin() -> anyhow::Result<Vec<u8>> {
     let mut input = Vec::<u8>::new();
 
