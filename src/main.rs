@@ -30,10 +30,16 @@ fn send(path: Option<String>, address: String) -> anyhow::Result<()>{
 
 fn receive(path: String, address: String) -> anyhow::Result<()> { 
     let listener = TcpListener::bind(address)?;
-    let file_contents = read_from_listener(listener)?; 
+    let contents = read_from_listener(listener)?; 
     
-    File::create(path)?.write_all(&file_contents)?;
+    write_file(path, contents)?;
     
+    Ok(())
+}
+
+fn write_file(path: String, contents: Vec<u8>) -> anyhow::Result<()> {
+    File::create(path)?.write_all(&contents)?;
+
     Ok(())
 }
 
