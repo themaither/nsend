@@ -13,28 +13,39 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn send(path: String, address: String) -> anyhow::Result<()>{
-    
-    let mut file = File::open(path)?;
-    let mut connection = TcpStream::connect(address)?;
 
-    let mut file_contents = Vec::<u8>::new();
-    file.read_to_end(&mut file_contents)?;
-    
+fn send(path: String, address: String) -> anyhow::Result<()>{
+    let mut connection = TcpStream::connect(address)?;
+    let file_contents = read_file(path)?;
+
     connection.write(&file_contents)?;
     
     Ok(())
 }
 
-fn receive(path: String, address: String) -> anyhow::Result<()> {
-    
+fn receive(path: String, address: String) -> anyhow::Result<()> { 
     let listener = TcpListener::bind(address)?;
+    let file_contents = read_from_listener(listener)?; 
     
+    File::create(path)?.write_all(&file_contents)?;
+    
+    Ok(())
+}
+
+fn read_file(path: String) -> anyhow::Result<Vec<u8>> {
+    let mut file = File::open(path)?;
+    let mut file_contents = Vec::<u8>::new();
+
+    file.read_to_end(&mut file_contents)?;
+
+    Ok(file_contents)
+}
+
+fn read_from_listener(listener: TcpListener) -> anyhow::Result<Vec<u8>> {
     let mut contents = listener.accept()?.0;
     let mut file_contents = Vec::<u8>::new();
+
     contents.read_to_end(&mut file_contents)?;
 
-    File::create(path)?.write_all(&file_contents)?;
-
-    Ok(())
+    Ok(file_contents)
 }
