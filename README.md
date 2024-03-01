@@ -18,6 +18,16 @@ nsend send [IP_ADDRESS]:[PORT] [FILENAME]
 
 Sends `FILENAME` to `IP_ADDRESS` via `PORT`
 
+You can also use stdin / stdout
+
+```sh
+nsend receive [IP_ADDRESS]:[PORT] >> file.txt
+```
+
+```sh
+cat file.txt | nsend send [IP_ADDRESS]:[PORT]
+```
+
 # Example
 
 ```sh
@@ -29,3 +39,4 @@ nsend receive 192.168.0.5:1333 result.txt
 nsend send 192.168.0.5:1333 file.txt
 
 ```
+
