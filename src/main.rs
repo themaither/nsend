@@ -13,7 +13,6 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-
 fn send(path: Option<String>, address: String) -> anyhow::Result<()>{
     let mut connection = TcpStream::connect(address)?;
     
