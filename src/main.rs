@@ -14,10 +14,16 @@ fn main() -> anyhow::Result<()> {
 }
 
 
-fn send(path: String, address: String) -> anyhow::Result<()>{
+fn send(path: Option<String>, address: String) -> anyhow::Result<()>{
     let mut connection = TcpStream::connect(address)?;
-    let file_contents = read_file(path)?;
+    
+    let file_contents;
 
+    match path {
+        Some(a) => file_contents = read_file(a)?,
+        None => file_contents = read_stdin()?,
+    }
+    
     connection.write(&file_contents)?;
     
     Ok(())
@@ -39,6 +45,14 @@ fn read_file(path: String) -> anyhow::Result<Vec<u8>> {
     file.read_to_end(&mut file_contents)?;
 
     Ok(file_contents)
+}
+
+fn read_stdin() -> anyhow::Result<Vec<u8>> {
+    let mut input = Vec::<u8>::new();
+
+    std::io::stdin().read_to_end(&mut input)?;
+
+    Ok(input)
 }
 
 fn read_from_listener(listener: TcpListener) -> anyhow::Result<Vec<u8>> {
