@@ -8,7 +8,7 @@ A small utility, written in $Blazingly$ $Fast$ $Rust$ $Programming$ $Language$ðŸ
 nsend receive [IP_ADDRESS]:[PORT] [FILENAME]
 ```
 
-Will receive file and save it at `FILENAME``
+Will receive file and save it at `FILENAME`
 
 ## Send file
 
